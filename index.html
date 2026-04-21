@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="My Anchor"/>
+<meta name="theme-color" content="#1a1035"/>
+<title>My Anchor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --purple: #534AB7;
+  --purple-light: #7F77DD;
+  --purple-dark: #3C3489;
+  --purple-bg: #EEEDFE;
+  --gold: #BA7517;
+  --gold-light: #EF9F27;
+  --gold-bg: #FAEEDA;
+  --pink: #D4537E;
+  --pink-bg: #FBEAF0;
+  --green: #3B6D11;
+  --green-bg: #EAF3DE;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --red: #A32D2D;
+  --red-bg: #FCEBEB;
+  --gray: #5F5E5A;
+  --gray-bg: #F1EFE8;
+  --ink: #1a1035;
+  --ink2: #2d2650;
+  --parchment: #faf8f3;
+  --parchment2: #f3f0e8;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--sans);
+  background: var(--ink);
+  color: var(--parchment);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(83,74,183,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(186,117,23,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(212,83,126,0.08) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top, 20px) 0 env(safe-area-inset-bottom, 20px);
+}
+
+/* ── HEADER ── */
+.header {
+  padding: 28px 24px 16px;
+  text-align: center;
+}
+
+.header-eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 6px;
+}
+
+.header-title {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--parchment);
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.header-accent {
+  width: 32px;
+  height: 1px;
+  background: var(--gold-light);
+  margin: 10px auto 0;
+  opacity: 0.6;
+}
+
+.header-date {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 8px;
+  letter-spacing: .04em;
+}
+
+/* ── STEP DOTS ── */
+.step-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 24px 20px;
+}
+
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: all .3s;
+}
+
+.dot.active {
+  background: var(--gold-light);
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* ── PANELS ── */
+.panel { display: none; flex: 1; padding: 0 20px 24px; animation: fadeUp .3s ease; }
+.panel.active { display: flex; flex-direction: column; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 14px;
+}
+
+/* ── MOOD GRID ── */
+.mood-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+  align-content: start;
+}
+
+.mood-btn {
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 18px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+  -webkit-appearance: none;
+}
+
+.mood-btn:active { transform: scale(0.96); }
+
+.mood-name {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--parchment);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.mood-desc {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.3;
+}
+
+.mood-btn.sel {
+  border-width: 1px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.card-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+
+.scripture-ref {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+  letter-spacing: .02em;
+}
+
+.scripture-text {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--parchment);
+  margin-bottom: 14px;
+}
+
+.scripture-theme {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: .03em;
+  padding-top: 12px;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+}
+
+/* ── BUTTONS ── */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 13px 14px;
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
+  transition: all .2s;
+  -webkit-appearance: none;
+  text-align: center;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn.primary {
+  background: var(--purple);
+  border-color: var(--purple-light);
+  color: #fff;
+  font-weight: 500;
+}
+
+.btn.gold {
+  background: rgba(186,117,23,0.2);
+  border-color: rgba(239,159,39,0.4);
+  color: var(--gold-light);
+}
+
+.btn.full { width: 100%; display: block; margin-bottom: 10px; flex: none; }
+
+/* ── VALUE CHECKS ── */
+.val-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.val-check:last-child { border-bottom: none; }
+.val-check:active { opacity: 0.7; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 0.5px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: all .2s;
+}
+
+.val-text {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--parchment);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.val-text.done {
+  color: rgba(255,255,255,0.3);
+  text-decoration: line-through;
+}
+
+.val-tag {
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  letter-spacing: .03em;
+}
+
+/* ── JOURNAL ── */
+.journal-prompt {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--parchment);
+  resize: none;
+  min-height: 130px;
+  line-height: 1.7;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+textarea::placeholder { color: rgba(255,255,255,0.2); font-style: italic; }
+textarea:focus { border-color: rgba(83,74,183,0.5); }
+
+/* ── BROWSE SCRIPTURES ── */
+.scripture-item {
+  padding: 12px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+
+.scripture-item:last-child { border-bottom: none; }
+
+.scripture-item-ref {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 3px;
+}
+
+.scripture-item-theme {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── CLOSE CARD ── */
+.close-card {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.close-icon {
+  width: 56px; height: 56px;
+  background: rgba(83,74,183,0.2);
+  border: 0.5px solid rgba(127,119,221,0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.close-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-style: italic;
+  color: var(--parchment);
+  margin-bottom: 12px;
+}
+
+.close-word {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+/* ── PROGRESS ── */
+.progress-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 1px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 1px;
+  background: var(--gold-light);
+  transition: width .4s ease;
+  opacity: 0.7;
+}
+
+/* ── SAVED ENTRIES ── */
+.saved-entry {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.saved-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.saved-date { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+.saved-text {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 12px 20px env(safe-area-inset-bottom, 16px);
+  background: rgba(26,16,53,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-around;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 16px;
+  border-radius: 10px;
+  transition: all .2s;
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+}
+
+.nav-item:active { background: rgba(255,255,255,0.06); }
+
+.nav-icon {
+  width: 22px; height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: .03em;
+}
+
+.nav-item.active .nav-label { color: var(--gold-light); }
+.nav-item.active .nav-icon svg path, .nav-item.active .nav-icon svg rect { stroke: var(--gold-light); }
+
+/* ── MAIN CONTENT SCROLL ── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px;
+}
+
+/* ── TABS ── */
+.tab { display: none; }
+.tab.active { display: block; }
+
+/* ── SCRIPTURE BROWSE FILTERS ── */
+.filter-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+}
+.filter-scroll::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  font-family: var(--sans);
+  cursor: pointer;
+  -webkit-appearance: none;
+  transition: all .2s;
+}
+
+.filter-chip.sel {
+  background: var(--purple);
+  border-color: var(--purple-light);
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-eyebrow">Daily companion</div>
+    <div class="header-title">My Anchor</div>
+    <div class="header-accent"></div>
+    <div class="header-date" id="hdrDate"></div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- ══ TAB: CHECK-IN ══ -->
+    <div class="tab active" id="tab-checkin">
+      <div class="step-dots" id="stepDots"></div>
+
+      <!-- Step 0: Mood -->
+      <div class="panel active" id="step0">
+        <div class="section-label" style="padding:0 4px">How are you feeling right now?</div>
+        <div class="mood-grid">
+          <button class="mood-btn" onclick="selectMood('anxious','#EF9F27','rgba(186,117,23,0.25)','rgba(239,159,39,0.3)')">
+            <span class="mood-name">Anxious</span>
+            <span class="mood-desc">Pressure, stress</span>
+          </button>
+          <button class="mood-btn" onclick="selectMood('discouraged','#7F77DD','rgba(83,74,183,0.25)','rgba(127,119,221,0.3)')">
+            <span class="mood-name">Discouraged</span>
+            <span class="mood-desc">Low, defeated</span>
+          </button>
+          <button class="mood-btn" onclick="selectMood('angry','#E24B4A','rgba(163,45,45,0.25)','rgba(226,75,74,0.3)')">
+            <span class="mood-name">Frustrated</span>
+            <span class="mood-desc">Angry, wronged</span>
+          </button>
+          <button class="mood-btn" onclick="selectMood('lost','#85B7EB','rgba(24,95,165,0.25)','rgba(133,183,235,0.3)')">
+            <span class="mood-name">Lost</span>
+            <span class="mood-desc">Confused, adrift</span>
+          </button>
+          <button class="mood-btn" onclick="selectMood('grateful','#97C459','rgba(59,109,17,0.25)','rgba(151,196,89,0.3)')">
+            <span class="mood-name">Grateful</span>
+            <span class="mood-desc">Thankful</span>
+          </button>
+          <button class="mood-btn" onclick="selectMood('strong','#AFA9EC','rgba(83,74,183,0.2)','rgba(175,169,236,0.3)')">
+            <span class="mood-name">Strong</span>
+            <span class="mood-desc">Clear, ready</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 1: Scripture -->
+      <div class="panel" id="step1">
+        <div class="section-label" style="padding:0 4px">Your scripture anchor</div>
+        <div class="card">
+          <div class="card-eyebrow">Word for this moment</div>
+          <div class="scripture-ref" id="scriptRef"></div>
+          <div class="scripture-text" id="scriptText"></div>
+          <div class="scripture-theme" id="scriptTheme"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="nextScripture()">Another word ↻</button>
+          <button class="btn primary" onclick="goStep(2)">This is it</button>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+      </div>
+
+      <!-- Step 2: Values -->
+      <div class="panel" id="step2">
+        <div class="section-label" style="padding:0 4px">Quick values check-in</div>
+        <div class="card">
+          <div class="card-eyebrow">Which are you standing in right now?</div>
+          <div id="valChecks"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="goStep(1)">Back</button>
+          <button class="btn primary" onclick="goStep(3)">Continue</button>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+      </div>
+
+      <!-- Step 3: Journal -->
+      <div class="panel" id="step3">
+        <div class="section-label" style="padding:0 4px">Release it here</div>
+        <div class="card">
+          <div class="journal-prompt" id="jPrompt"></div>
+          <textarea id="jText" placeholder="Write freely. This is between you and God..."></textarea>
+        </div>
+        <button class="btn full primary" onclick="saveAndClose()">Save & close ✓</button>
+        <button class="btn full" onclick="goStep(2)">Back</button>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      </div>
+
+      <!-- Step 4: Grounded -->
+      <div class="panel" id="step4">
+        <div class="card close-card">
+          <div class="close-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="close-title">You're grounded.</div>
+          <div class="close-word" id="closeWord"></div>
+          <button class="btn primary full" onclick="resetAll()" style="margin-bottom:0">Start again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: SCRIPTURES ══ -->
+    <div class="tab" id="tab-scriptures">
+      <div style="padding:0 20px 8px">
+        <div class="section-label">Your scriptures</div>
+        <div class="filter-scroll" id="filterChips"></div>
+        <div id="scriptureListFull"></div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: VALUES ══ -->
+    <div class="tab" id="tab-values">
+      <div style="padding:0 20px">
+        <div class="section-label">My values</div>
+        <div id="valSliders"></div>
+        <div class="card" style="margin-top:4px">
+          <div class="card-eyebrow">Today's tensions</div>
+          <div id="tensionBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: JOURNAL ══ -->
+    <div class="tab" id="tab-journal">
+      <div style="padding:0 20px">
+        <div class="section-label">My entries</div>
+        <div id="journalFeed"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn gold" onclick="showCheckin()" style="padding:12px 28px">New check-in ✦</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<div class="bottom-nav">
+  <button class="nav-item active" id="nav-checkin" onclick="switchTab('checkin')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <path d="M10 6v4l2.5 2.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="nav-label">Check-in</span>
+  </button>
+  <button class="nav-item" id="nav-scriptures" onclick="switchTab('scriptures')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="3" y="2" width="14" height="16" rx="2" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <path d="M7 7h6M7 10h6M7 13h4" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="nav-label">Scriptures</span>
+  </button>
+  <button class="nav-item" id="nav-values" onclick="switchTab('values')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 3L12.5 8H17L13.5 11L15 16L10 13L5 16L6.5 11L3 8H7.5L10 3Z" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="nav-label">Values</span>
+  </button>
+  <button class="nav-item" id="nav-journal" onclick="switchTab('journal')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 4h12v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <path d="M8 4V2M12 4V2" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M7 9h6M7 12h4" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="nav-label">Journal</span>
+  </button>
+</div>
+
+<script>
+const scriptures = [
+  {ref:'Psalm 103:2-4',text:'Praise the Lord, my soul, and forget not all his benefits — who forgives all your sins and heals all your diseases, who redeems your life from the pit and crowns you with love and compassion.',theme:'God\'s mercy and full redemption',moods:['discouraged','lost','grateful'],book:'Psalms'},
+  {ref:'Psalm 103:8',text:'The Lord is compassionate and gracious, slow to anger, abounding in love.',theme:'God\'s character — patient and kind',moods:['angry','anxious','discouraged'],book:'Psalms'},
+  {ref:'Psalm 103:11-12',text:'As high as the heavens are above the earth, so great is his love for those who fear him; as far as the east is from the west, so far has he removed our transgressions from us.',theme:'Complete and total forgiveness',moods:['discouraged','anxious','lost'],book:'Psalms'},
+  {ref:'Psalm 103:17-18',text:'But from everlasting to everlasting the Lord\'s love is with those who fear him, and his righteousness with their children\'s children — with those who keep his covenant.',theme:'His faithfulness spans generations',moods:['grateful','strong','lost'],book:'Psalms'},
+  {ref:'Psalm 89:13',text:'Your arm is endowed with power; your hand is strong, your right hand exalted.',theme:'God\'s sovereign strength over everything',moods:['strong','anxious','lost'],book:'Psalms'},
+  {ref:'Psalm 89:33-34',text:'But I will not take my love from him, nor will I ever betray my faithfulness. I will not violate my covenant or alter what my lips have uttered.',theme:'God\'s unbreakable covenant with you',moods:['discouraged','lost','anxious'],book:'Psalms'},
+  {ref:'Psalm 87:2-3',text:'The Lord loves the gates of Zion more than all the other dwellings of Jacob. Glorious things are said of you, city of God.',theme:'You are established in a glorious place',moods:['strong','grateful'],book:'Psalms'},
+  {ref:'Psalm 45:1',text:'My heart is stirred by a noble theme as I recite my verses for the king; my tongue is the pen of a skillful writer.',theme:'Let your words carry weight and beauty',moods:['strong','grateful','creative'],book:'Psalms'},
+  {ref:'Psalm 37:4-5',text:'Take delight in the Lord, and he will give you the desires of your heart. Commit your way to the Lord; trust in him and he will do this.',theme:'Trust and delight — the path to promise',moods:['anxious','lost','discouraged'],book:'Psalms'},
+  {ref:'Psalm 37:7-8',text:'Be still before the Lord and wait patiently for him; do not fret when people succeed in their ways. Refrain from anger and turn from wrath; do not fret — it leads only to evil.',theme:'Stillness over anxious reaction',moods:['angry','anxious'],book:'Psalms'},
+  {ref:'Psalm 37:23-24',text:'The Lord makes firm the steps of the one who delights in him; though he may stumble, he will not fall, for the Lord upholds him with his hand.',theme:'Even your stumbles are held',moods:['discouraged','lost','anxious'],book:'Psalms'},
+  {ref:'Psalm 34:1-2',text:'I will extol the Lord at all times; his praise will always be on my lips. I will glory in the Lord; let the afflicted hear and rejoice.',theme:'Praise in every season, not just good ones',moods:['grateful','strong','discouraged'],book:'Psalms'},
+  {ref:'Psalm 34:8',text:'Taste and see that the Lord is good; blessed is the one who takes refuge in him.',theme:'His goodness is something you experience',moods:['lost','discouraged','anxious'],book:'Psalms'},
+  {ref:'Galatians 5:1',text:'It is for freedom that Christ has set us free. Stand firm, then, and do not let yourselves be burdened again by a yoke of slavery.',theme:'Your freedom is secured — stand in it',moods:['lost','discouraged','anxious'],book:'Galatians'},
+  {ref:'Galatians 5:22-23',text:'But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control. Against such things there is no law.',theme:'Who you are becoming through the Spirit',moods:['angry','anxious','strong'],book:'Galatians'},
+  {ref:'Galatians 5:16',text:'So I say, walk by the Spirit, and you will not gratify the desires of the flesh.',theme:'Walk by the Spirit, step by step',moods:['anxious','angry','strong'],book:'Galatians'},
+  {ref:'Ephesians 3:16-17',text:'I pray that out of his glorious riches he may strengthen you with power through his Spirit in your inner being, so that Christ may dwell in your hearts through faith.',theme:'Inner strength renewed from the root',moods:['discouraged','lost','anxious'],book:'Ephesians'},
+  {ref:'Ephesians 4:26-27',text:'In your anger do not sin: do not let the sun go down while you are still angry, and do not give the devil a foothold.',theme:'Handle anger before it handles you',moods:['angry'],book:'Ephesians'},
+  {ref:'Ephesians 6:10-12',text:'Finally, be strong in the Lord and in his mighty power. Put on the full armor of God, so that you can take your stand against the devil\'s schemes.',theme:'You are equipped for spiritual battle',moods:['strong','anxious','angry'],book:'Ephesians'},
+  {ref:'Philippians 4:6-7',text:'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.',theme:'Peace is available right now',moods:['anxious','lost','discouraged'],book:'Philippians'},
+  {ref:'Philippians 4:8',text:'Whatever is true, whatever is noble, whatever is right, whatever is pure, whatever is lovely, whatever is admirable — if anything is excellent or praiseworthy — think about such things.',theme:'Guard what your mind dwells on',moods:['angry','anxious','lost'],book:'Philippians'},
+  {ref:'Philippians 4:13',text:'I can do all this through him who gives me strength.',theme:'The source of your strength is not you alone',moods:['strong','discouraged','lost'],book:'Philippians'},
+  {ref:'1 Thessalonians 5:16-18',text:'Rejoice always, pray continually, give thanks in all circumstances; for this is God\'s will for you in Christ Jesus.',theme:'Three anchors for any moment',moods:['grateful','strong','discouraged','anxious'],book:'1 Thessalonians'},
+  {ref:'1 Thessalonians 5:23-24',text:'May God himself, the God of peace, sanctify you through and through. The one who calls you is faithful, and he will do it.',theme:'God will complete what He started in you',moods:['discouraged','anxious','lost'],book:'1 Thessalonians'},
+  {ref:'2 Timothy 2:15',text:'Do your best to present yourself to God as one approved, a worker who does not need to be ashamed and who correctly handles the word of truth.',theme:'Excellence and integrity in your work',moods:['strong','anxious','lost'],book:'2 Timothy'},
+  {ref:'2 Timothy 3:16-17',text:'All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness, so that the servant of God may be thoroughly equipped for every good work.',theme:'Scripture is your full equipment',moods:['lost','discouraged','strong'],book:'2 Timothy'},
+  {ref:'2 Timothy 4:2',text:'Preach the word; be prepared in season and out of season; correct, rebuke and encourage — with great patience and careful instruction.',theme:'Staying ready in every season',moods:['strong','lost'],book:'2 Timothy'},
+  {ref:'Hebrews 6:19',text:'We have this hope as an anchor for the soul, firm and secure.',theme:'Hope is your anchor — not circumstances',moods:['anxious','discouraged','lost'],book:'Hebrews'},
+  {ref:'Hebrews 10:23',text:'Let us hold unswervingly to the hope we profess, for he who promised is faithful.',theme:'Hold the course — He is faithful',moods:['discouraged','lost','anxious'],book:'Hebrews'},
+  {ref:'Hebrews 11:1',text:'Now faith is confidence in what we hope for and assurance about what we do not see.',theme:'Faith is present-tense confidence',moods:['lost','discouraged','anxious'],book:'Hebrews'},
+  {ref:'Hebrews 11:6',text:'And without faith it is impossible to please God, because anyone who comes to him must believe that he exists and that he rewards those who earnestly seek him.',theme:'Seeking Him is never wasted',moods:['lost','discouraged'],book:'Hebrews'},
+  {ref:'James 1:2-4',text:'Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance. Let perseverance finish its work so that you may be mature and complete, not lacking anything.',theme:'Trials are building something in you',moods:['discouraged','anxious','angry'],book:'James'},
+  {ref:'James 1:19-20',text:'Everyone should be quick to listen, slow to speak and slow to become angry, because human anger does not produce the righteousness that God desires.',theme:'Wisdom in conflict — listen first',moods:['angry'],book:'James'},
+  {ref:'James 1:5',text:'If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you.',theme:'Ask for wisdom — He gives it freely',moods:['lost','anxious'],book:'James'},
+  {ref:'1 Peter 5:7',text:'Cast all your anxiety on him because he cares for you.',theme:'Release it — He actually cares',moods:['anxious','discouraged','lost'],book:'1 Peter'},
+  {ref:'1 Peter 5:8-9',text:'Be alert and of sober mind. Your enemy the devil prowls around like a roaring lion looking for someone to devour. Resist him, standing firm in the faith.',theme:'Stay alert and stand firm',moods:['strong','anxious','angry'],book:'1 Peter'},
+  {ref:'2 Peter 1:3',text:'His divine power has given us everything we need for a godly life through our knowledge of him who called us by his own glory and goodness.',theme:'You already have everything you need',moods:['lost','discouraged','strong'],book:'2 Peter'},
+  {ref:'1 John 1:9',text:'If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.',theme:'Grace is always, always available',moods:['discouraged','angry','lost'],book:'1 John'},
+  {ref:'1 John 4:18',text:'There is no fear in love. But perfect love drives out fear, because fear has to do with punishment. The one who fears is not made perfect in love.',theme:'Love pushes fear out completely',moods:['anxious','lost','discouraged'],book:'1 John'},
+  {ref:'2 Corinthians 2:10-11',text:'Anyone you forgive, I also forgive. And what I have forgiven — if there was anything to forgive — I have forgiven in the sight of Christ for your sake, in order that Satan might not outwit us. For we are not unaware of his schemes.',theme:'Forgiveness closes the door on the enemy',moods:['angry'],book:'2 Corinthians'},
+  {ref:'2 Corinthians 11:14',text:'Satan himself masquerades as an angel of light.',theme:'Discern what is truly from God',moods:['lost','anxious','angry'],book:'2 Corinthians'},
+  {ref:'Jude 20-21',text:'But you, dear friends, by building yourselves up in your most holy faith and praying in the Holy Spirit, keep yourselves in God\'s love as you wait for the mercy of our Lord Jesus Christ to bring you to eternal life.',theme:'Build yourself up — keep yourself in His love',moods:['strong','lost','discouraged'],book:'Jude'},
+];
+
+const valuesData = [
+  {label:'Integrity',color:'#534AB7',bg:'rgba(83,74,183,0.25)',q:'I am acting from my word, not my wound'},
+  {label:'Creativity',color:'#D4537E',bg:'rgba(212,83,126,0.25)',q:'I am bringing something new to this moment'},
+  {label:'Growth',color:'#3B6D11',bg:'rgba(59,109,17,0.25)',q:'I am letting this shape me, not break me'},
+  {label:'Freedom',color:'#185FA5',bg:'rgba(24,95,165,0.25)',q:'I am choosing my response, not just reacting'},
+  {label:'Simplicity',color:'#5F5E5A',bg:'rgba(95,94,90,0.25)',q:'I am focusing only on what truly matters'},
+];
+
+const scores = [96,20,36,30,10];
+const valChecksState = [false,false,false,false,false];
+
+const journalPrompts = {
+  anxious:'What is the real fear underneath this? And what does God\'s word say about it?',
+  discouraged:'Where have you seen God come through before? What do you need to believe right now?',
+  angry:'What boundary or value feels violated? How can you respond from integrity — not reaction?',
+  lost:'What was the last clear direction you felt? What one faithful step can you take from here?',
+  grateful:'What specifically are you grateful for? How is this a sign of His faithfulness in your life?',
+  strong:'You\'re strong right now — who needs what you carry? How do you want to steward this?',
+};
+
+const closeWords = {
+  anxious:'You brought your anxiety to the right place. The peace that passes understanding is available to you right now.',
+  discouraged:'You are not forgotten. You are not finished. The same God who started this work in you will complete it.',
+  angry:'You handled that with more grace than you know. Integrity in hard moments is the mark of real character.',
+  lost:'Clarity comes one faithful step at a time. You took one today. That is enough.',
+  grateful:'Gratitude is one of the most powerful spiritual forces available to you. Carry it into the rest of your day.',
+  strong:'Stay in this. The strength you feel is a gift — use it for something that matters today.',
+};
+
+let currentMood = null;
+let currentMoodColor = '#EF9F27';
+let filteredScriptures = [];
+let currentScriptIdx = 0;
+const savedEntries = [];
+const bookFilters = ['All','Psalms','Philippians','Ephesians','James','1 Peter','Hebrews','Galatians','2 Timothy','1 John','Jude','2 Corinthians','1 Thessalonians','2 Peter'];
+let activeFilter = 'All';
+
+document.getElementById('hdrDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+function renderDots(step) {
+  document.getElementById('stepDots').innerHTML = [0,1,2,3].map(i=>
+    `<div class="dot ${step===i?'active':''}"></div>`).join('');
+}
+
+function goStep(n) {
+  for(let i=0;i<=4;i++){
+    const el=document.getElementById('step'+i);
+    if(el) el.classList.toggle('active',i===n);
+    if(el) el.style.display = i===n ? 'flex' : 'none';
+  }
+  renderDots(n < 4 ? n : 3);
+  window.scrollTo(0,0);
+}
+
+function selectMood(mood, color, bg, borderColor) {
+  currentMood = mood;
+  currentMoodColor = color;
+  document.querySelectorAll('.mood-btn').forEach(b=>{
+    b.classList.remove('sel');
+    b.style.borderColor='';
+    b.style.background='';
+  });
+  event.currentTarget.classList.add('sel');
+  event.currentTarget.style.borderColor = color;
+  event.currentTarget.style.background = bg;
+
+  filteredScriptures = scriptures.filter(s=>s.moods.includes(mood));
+  if(!filteredScriptures.length) filteredScriptures = scriptures;
+  currentScriptIdx = 0;
+  showScripture();
+  setTimeout(()=>goStep(1), 380);
+}
+
+function showScripture() {
+  const s = filteredScriptures[currentScriptIdx % filteredScriptures.length];
+  document.getElementById('scriptRef').textContent = s.ref;
+  document.getElementById('scriptRef').style.color = currentMoodColor;
+  document.getElementById('scriptText').textContent = s.text;
+  document.getElementById('scriptTheme').textContent = s.theme;
+  document.getElementById('jPrompt').textContent = journalPrompts[currentMood] || 'What\'s on your heart right now?';
+}
+
+function nextScripture() {
+  currentScriptIdx++;
+  showScripture();
+}
+
+function renderValChecks() {
+  document.getElementById('valChecks').innerHTML = valuesData.map((v,i)=>`
+    <div class="val-check" onclick="toggleVal(${i})">
+      <div class="check-box" id="vcb${i}" style="${valChecksState[i]?'background:'+v.color+';border-color:'+v.color:''}">
+        ${valChecksState[i]?`<svg width="11" height="11" viewBox="0 0 11 11"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}
+      </div>
+      <span class="val-text ${valChecksState[i]?'done':''}">${v.q}</span>
+      <span class="val-tag" style="background:${v.bg};color:${v.color}">${v.label}</span>
+    </div>`).join('');
+}
+
+function toggleVal(i) {
+  valChecksState[i] = !valChecksState[i];
+  renderValChecks();
+}
+
+function saveAndClose() {
+  const text = document.getElementById('jText').value.trim();
+  const s = filteredScriptures[currentScriptIdx % filteredScriptures.length];
+  const activeVals = valuesData.filter((_,i)=>valChecksState[i]).map(v=>v.label).join(', ');
+  if(text || currentMood) {
+    savedEntries.unshift({
+      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+      time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),
+      mood: currentMood,
+      moodColor: currentMoodColor,
+      scripture: s ? s.ref : '',
+      values: activeVals,
+      text: text,
+    });
+  }
+  document.getElementById('closeWord').textContent = closeWords[currentMood] || 'You showed up. That matters.';
+  goStep(4);
+  renderJournalFeed();
+}
+
+function resetAll() {
+  currentMood = null;
+  filteredScriptures = [];
+  currentScriptIdx = 0;
+  valChecksState.fill(false);
+  document.getElementById('jText').value = '';
+  document.querySelectorAll('.mood-btn').forEach(b=>{b.classList.remove('sel');b.style.borderColor='';b.style.background='';});
+  renderValChecks();
+  goStep(0);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('nav-'+tab).classList.add('active');
+  if(tab==='scriptures') renderScripturesFull();
+  if(tab==='values') renderValuesTab();
+  if(tab==='journal') renderJournalFeed();
+  window.scrollTo(0,0);
+}
+
+function showCheckin() { switchTab('checkin'); }
+
+function renderScripturesFull() {
+  const chips = bookFilters.map(b=>`
+    <button class="filter-chip ${activeFilter===b?'sel':''}" onclick="setFilter('${b}')">${b}</button>`).join('');
+  document.getElementById('filterChips').innerHTML = chips;
+
+  const list = scriptures.filter(s=>activeFilter==='All'||s.book===activeFilter);
+  document.getElementById('scriptureListFull').innerHTML = list.map(s=>`
+    <div class="scripture-item">
+      <div class="scripture-item-ref">${s.ref}</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:rgba(255,255,255,0.75);line-height:1.65;margin:5px 0 5px">${s.text}</div>
+      <div class="scripture-item-theme">${s.theme}</div>
+    </div>`).join('');
+}
+
+function setFilter(f) { activeFilter = f; renderScripturesFull(); }
+
+function renderValuesTab() {
+  document.getElementById('valSliders').innerHTML = valuesData.map((v,i)=>`
+    <div class="card" style="margin-bottom:10px;padding:16px 18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:${v.color}">${v.label}</div>
+        </div>
+        <div style="font-size:22px;font-weight:500;color:${v.color}" id="sv${i}">${scores[i]}</div>
+      </div>
+      <input type="range" min="0" max="100" step="1" value="${scores[i]}"
+        style="width:100%;accent-color:${v.color};height:3px"
+        oninput="updateScore(${i},this.value)"/>
+      <div style="height:2px;background:rgba(255,255,255,0.08);border-radius:1px;margin-top:10px">
+        <div id="vbar${i}" style="height:100%;border-radius:1px;background:${v.color};width:${scores[i]}%;transition:width .3s;opacity:0.8"></div>
+      </div>
+    </div>`).join('');
+
+  const tensions = [
+    {a:'Integrity',b:'Creativity',level:Math.round((scores[0]-scores[1])/100*80+20)},
+    {a:'Freedom',b:'Integrity',level:Math.round((scores[3]+scores[0])/200*100)},
+    {a:'Growth',b:'Simplicity',level:Math.round((scores[2]+10)/110*70)},
+  ];
+  document.getElementById('tensionBars').innerHTML = tensions.map(t=>{
+    const va=valuesData.find(v=>v.label===t.a),vb=valuesData.find(v=>v.label===t.b);
+    return`<div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:12px;color:${va.color}">${t.a}</span>
+        <span style="font-size:12px;color:${vb.color}">${t.b}</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${t.level}%;background:${va.color};border-radius:3px;opacity:0.8"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateScore(i, v) {
+  scores[i] = parseInt(v);
+  document.getElementById('sv'+i).textContent = v;
+  document.getElementById('vbar'+i).style.width = v+'%';
+}
+
+function renderJournalFeed() {
+  const el = document.getElementById('journalFeed');
+  if(!savedEntries.length) {
+    el.innerHTML = `<div style="text-align:center;padding:40px 20px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:rgba(255,255,255,0.25);margin-bottom:8px">No entries yet</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.2)">Your reflections will appear here</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = savedEntries.map(e=>`
+    <div class="saved-entry">
+      <div class="saved-meta">
+        <span class="saved-date">${e.date} · ${e.time}</span>
+        <span style="font-size:11px;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,0.07);color:${e.moodColor||'rgba(255,255,255,0.4)'}">${e.mood||''}</span>
+      </div>
+      ${e.scripture?`<div style="font-size:11px;color:rgba(239,159,39,0.6);margin-bottom:6px">${e.scripture}</div>`:''}
+      ${e.text?`<div class="saved-text">${e.text}</div>`:''}
+      ${e.values?`<div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:6px">Values: ${e.values}</div>`:''}
+    </div>`).join('');
+}
+
+// Init
+renderValChecks();
+renderDots(0);
+goStep(0);
+renderJournalFeed();
+</script>
+</body>
+</html>
