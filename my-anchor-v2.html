@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="My Anchor"/>
+<meta name="theme-color" content="#0d1b2a"/>
+<title>My Anchor</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy:    #0d1b2a;
+  --navy2:   #152333;
+  --navy3:   #1e2f42;
+  --linen:   #f0ead8;
+  --linen2:  #e0d9c5;
+  --muted:   rgba(240,234,216,0.45);
+  --sage:    #7a9e7e;
+  --sage2:   #5c8261;
+  --gold:    #c8973a;
+  --gold2:   #e6b55a;
+  --serif:   'Lora', Georgia, serif;
+  --sans:    'Inter', system-ui, sans-serif;
+  --r:       16px;
+  --r-sm:    10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--sans);
+  background: var(--navy);
+  color: var(--linen);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+/* subtle ambient texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 5%, rgba(122,158,126,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(200,151,58,0.07) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ══════════════════════════════════════
+   WELCOME / DISCLAIMER SCREEN
+══════════════════════════════════════ */
+#screen-welcome {
+  padding: 48px 28px 36px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.welcome-mark {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 24px;
+  opacity: 0.7;
+}
+
+.welcome-title {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--linen);
+  letter-spacing: -.01em;
+  margin-bottom: 6px;
+}
+
+.welcome-sub {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.disclaimer {
+  background: rgba(122,158,126,0.08);
+  border: 1px solid rgba(122,158,126,0.2);
+  border-radius: var(--r);
+  padding: 20px 22px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.disclaimer p {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(240,234,216,0.7);
+  line-height: 1.75;
+}
+
+.disclaimer p + p { margin-top: 10px; }
+
+.disclaimer strong {
+  color: var(--sage);
+  font-weight: 500;
+  font-style: normal;
+}
+
+.name-section {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.name-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: block;
+  text-align: left;
+}
+
+.name-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+input[type="text"] {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--linen);
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+
+input[type="text"]::placeholder { color: rgba(240,234,216,0.25); font-style: italic; }
+input[type="text"]:focus { border-color: rgba(122,158,126,0.5); }
+
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: var(--sage2);
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--linen);
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  -webkit-appearance: none;
+  letter-spacing: .02em;
+}
+
+.btn-primary:active { transform: scale(0.98); background: #4d6e51; }
+
+/* ══════════════════════════════════════
+   MOOD SCREEN
+══════════════════════════════════════ */
+#screen-mood {
+  padding: env(safe-area-inset-top, 24px) 0 0;
+  flex-direction: column;
+}
+
+.mood-header {
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.mood-header-eyebrow {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.mood-header-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--linen);
+}
+
+.mood-header-name span { color: var(--gold); }
+
+.mood-question {
+  padding: 22px 24px 16px;
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: rgba(240,234,216,0.8);
+  line-height: 1.6;
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 4px 20px 24px;
+}
+
+.mood-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: var(--r);
+  padding: 20px 16px 18px;
+  cursor: pointer;
+  text-align: left;
+  transition: all .2s;
+  -webkit-appearance: none;
+}
+
+.mood-btn:active { transform: scale(0.97); }
+
+.mood-btn.sel {
+  border-color: var(--sage);
+  background: rgba(122,158,126,0.1);
+}
+
+.mood-name {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--linen);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.mood-sub {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ══════════════════════════════════════
+   CONVERSATION SCREEN
+══════════════════════════════════════ */
+#screen-convo {
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.convo-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+  -webkit-appearance: none;
+}
+
+.companion-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(122,158,126,0.15);
+  border: 1px solid rgba(122,158,126,0.3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.convo-header-info { flex: 1; }
+.convo-companion-name { font-size: 14px; font-weight: 500; color: var(--linen); }
+.convo-companion-role { font-size: 11px; font-weight: 300; color: var(--muted); }
+
+/* conversation feed */
+.convo-feed {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* companion message */
+.msg-companion {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  max-width: 92%;
+  animation: msgIn .3s ease;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.msg-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--sage);
+  opacity: 0.7;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.msg-companion-bubble {
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid var(--sage);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 14px 16px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(240,234,216,0.85);
+  line-height: 1.7;
+}
+
+/* scripture card inside conversation */
+.scripture-card {
+  background: rgba(200,151,58,0.07);
+  border: 1px solid rgba(200,151,58,0.22);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  margin: 4px 0;
+  animation: msgIn .35s ease;
+}
+
+.scripture-card-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  color: rgba(200,151,58,0.6);
+  margin-bottom: 8px;
+}
+
+.scripture-card-ref {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold2);
+  margin-bottom: 10px;
+}
+
+.scripture-card-text {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--linen);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.scripture-card-summary {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(240,234,216,0.55);
+  line-height: 1.6;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200,151,58,0.15);
+}
+
+/* user reply bubble */
+.msg-user {
+  align-self: flex-end;
+  background: rgba(122,158,126,0.12);
+  border: 1px solid rgba(122,158,126,0.2);
+  border-radius: var(--r-sm) var(--r-sm) 0 var(--r-sm);
+  padding: 12px 16px;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: rgba(240,234,216,0.8);
+  line-height: 1.65;
+  max-width: 88%;
+  animation: msgIn .25s ease;
+}
+
+/* typing indicator */
+.typing-indicator {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.typing-dots {
+  display: flex; gap: 5px;
+}
+
+.typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sage);
+  opacity: 0.4;
+  animation: typingBounce 1.2s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 0.8; transform: translateY(-4px); }
+}
+
+/* closing word card */
+.closing-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r);
+  padding: 20px 20px;
+  animation: msgIn .4s ease;
+}
+
+.closing-card-title {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sage);
+  margin-bottom: 10px;
+  letter-spacing: .01em;
+}
+
+.closing-card-text {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: rgba(240,234,216,0.65);
+  line-height: 1.75;
+}
+
+/* input area */
+.convo-input-area {
+  padding: 12px 16px 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(13,27,42,0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  flex-shrink: 0;
+}
+
+textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--linen);
+  resize: none;
+  min-height: 62px;
+  max-height: 140px;
+  line-height: 1.65;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+
+textarea::placeholder { color: rgba(240,234,216,0.22); font-style: italic; }
+textarea:focus { border-color: rgba(122,158,126,0.45); }
+
+.input-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.input-hint {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(240,234,216,0.25);
+}
+
+.send-btn {
+  background: var(--sage2);
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--linen);
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+  -webkit-appearance: none;
+}
+
+.send-btn:active { transform: scale(0.97); background: #4d6e51; }
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.new-session-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-sm);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+
+.new-session-btn:active { border-color: rgba(122,158,126,0.4); }
+
+/* quick reply chips */
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.quick-chip {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(240,234,216,0.55);
+  font-size: 12px;
+  font-family: var(--serif);
+  font-style: italic;
+  cursor: pointer;
+  transition: all .15s;
+  -webkit-appearance: none;
+}
+
+.quick-chip:active {
+  background: rgba(122,158,126,0.12);
+  border-color: rgba(122,158,126,0.3);
+  color: var(--linen);
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══ WELCOME / DISCLAIMER ══ -->
+  <div class="screen active" id="screen-welcome">
+    <svg class="welcome-mark" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="26" cy="26" r="24" stroke="#7a9e7e" stroke-width="1" opacity="0.4"/>
+      <path d="M26 14 L26 38" stroke="#c8973a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M18 21 L34 21" stroke="#c8973a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M26 38 C24 35 20 33 18 31" stroke="#7a9e7e" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+      <path d="M26 38 C28 35 32 33 34 31" stroke="#7a9e7e" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+    </svg>
+
+    <div class="welcome-title">My Anchor</div>
+    <div class="welcome-sub">A guided companion for the walk</div>
+
+    <div class="disclaimer">
+      <p>This app is <strong>not a spiritual authority</strong>. It is a quiet space designed to help you slow down, name what you're carrying, and find scripture that speaks to that moment.</p>
+      <p>For true understanding and spiritual direction, <strong>bring what you find here to God in prayer, to personal study, and to a trusted pastor or brother in Christ</strong>. The glory of any breakthrough belongs to Him.</p>
+    </div>
+
+    <div class="name-section">
+      <span class="name-label">Give your companion a name — or leave it as "Anchor" ›</span>
+      <div class="name-input-row">
+        <input type="text" id="companionNameInput" placeholder="e.g. Anchor, Guide, Silas…" maxlength="20"/>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="beginSession()">Begin</button>
+  </div>
+
+  <!-- ══ MOOD SCREEN ══ -->
+  <div class="screen" id="screen-mood">
+    <div class="mood-header">
+      <div class="mood-header-eyebrow">Check-in with <span id="moodHeaderName" style="color:var(--sage)">Anchor</span></div>
+      <div class="mood-header-name"><span id="moodGreeting">Where are you right now?</span></div>
+    </div>
+    <div class="mood-question">Pick the one that's closest to what you're carrying into this moment.</div>
+    <div class="mood-grid">
+      <button class="mood-btn" onclick="selectMood('anxious')">
+        <span class="mood-name">Anxious</span>
+        <span class="mood-sub">Pressure, worry, or fear underneath something</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('discouraged')">
+        <span class="mood-name">Discouraged</span>
+        <span class="mood-sub">Low, defeated, or running on empty</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('frustrated')">
+        <span class="mood-name">Frustrated</span>
+        <span class="mood-sub">Angry, wronged, or a boundary crossed</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('lost')">
+        <span class="mood-name">Lost</span>
+        <span class="mood-sub">Unclear on direction, confused, adrift</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('grateful')">
+        <span class="mood-name">Grateful</span>
+        <span class="mood-sub">Thankful and wanting to mark this moment</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('strong')">
+        <span class="mood-name">Grounded</span>
+        <span class="mood-sub">Clear, present, and ready to move</span>
+      </button>
+      <button class="mood-btn" onclick="selectMood('other')" style="grid-column:1/-1;text-align:center">
+        <span class="mood-name">Something else</span>
+        <span class="mood-sub">I'm not sure how to name it — let me describe it</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ CONVERSATION SCREEN ══ -->
+  <div class="screen" id="screen-convo">
+    <div class="convo-header">
+      <button class="back-btn" onclick="showMood()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M12 5L7 10L12 15" stroke="rgba(240,234,216,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="companion-avatar">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2 L8 14" stroke="#7a9e7e" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M4 6 L12 6" stroke="#c8973a" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="convo-header-info">
+        <div class="convo-companion-name" id="convoName">Anchor</div>
+        <div class="convo-companion-role">Your companion for this moment</div>
+      </div>
+    </div>
+
+    <div class="convo-feed" id="convoFeed"></div>
+
+    <div class="convo-input-area" id="convoInputArea">
+      <div class="quick-chips" id="quickChips"></div>
+      <textarea id="convoInput" placeholder="Write freely…" rows="2"
+        oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+      <div class="input-action-row">
+        <span class="input-hint" id="inputHint">Take your time.</span>
+        <button class="send-btn" id="sendBtn" onclick="sendUserMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STORAGE ──────────────────────────────────────────────────────────
+const STORAGE_KEY = 'my_anchor_v2';
+function loadData(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
+function saveData(d){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }catch(e){} }
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let companionName = 'Anchor';
+let currentMood = null;
+let convoStep = 0; // 0=opening, 1=dig1, 2=dig2, 3=scripture+reflection, 4=journal-prompt, 5=closed
+let userResponses = [];
+let data = loadData();
+let isTyping = false;
+let journalText = '';
+let sessionHistory = data.sessions || [];
+
+// ── SCRIPTURE LIBRARY (mood-keyed, with brief summaries) ──────────────
+const SCRIPTURES = {
+  anxious: [
+    {ref:'Philippians 4:6-7', text:'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.', summary:'Paul wrote this from prison — not from comfort. The peace here isn\'t about circumstances changing; it\'s about a guard being posted at the door of your mind when you pray instead of panic.'},
+    {ref:'Psalm 37:7', text:'Be still before the Lord and wait patiently for him; do not fret when people succeed in their ways, when they carry out their wicked schemes.', summary:'Fretting is a form of control. Stillness is a form of trust. This verse is less about passivity and more about not letting anxiety drive your next move.'},
+    {ref:'1 Peter 5:7', text:'Cast all your anxiety on him because he cares for you.', summary:'The word "cast" is intentional — like throwing something heavy. This isn\'t suggesting you hand it over gently. It\'s permission to unload everything, because He can carry what you can\'t.'},
+    {ref:'Isaiah 41:10', text:'So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.', summary:'Four promises in two sentences. Not "it will get easier" — but "I am with you and I will hold you." Presence before provision.'},
+  ],
+  discouraged: [
+    {ref:'Hebrews 10:23', text:'Let us hold unswervingly to the hope we profess, for he who promised is faithful.', summary:'"Unswervingly" means even when you feel like letting go. The anchor here is not your grip on hope — it\'s His faithfulness as the reason to keep holding.'},
+    {ref:'Psalm 34:18', text:'The Lord is close to the brokenhearted and saves those who are crushed in spirit.', summary:'This is not a promise for after you recover. It\'s a promise for inside the breaking. Closeness is the gift before the saving.'},
+    {ref:'Galatians 6:9', text:'Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.', summary:'The warning "do not become weary" acknowledges that discouragement is a real, expected part of the journey — not a sign of failure. The harvest has a timing only God holds.'},
+    {ref:'Lamentations 3:22-23', text:'Because of the Lord\'s great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.', summary:'Jeremiah wrote this in the middle of devastation. These aren\'t words of a man whose life was working — they\'re words of someone choosing to see what hasn\'t stopped, even when everything else has.'},
+  ],
+  frustrated: [
+    {ref:'James 1:19-20', text:'Everyone should be quick to listen, slow to speak and slow to become angry, because human anger does not produce the righteousness that God desires.', summary:'This isn\'t asking you to not feel anger — it\'s asking what your anger is producing. Righteous outcomes rarely come from reactive anger. Slowness is a form of wisdom.'},
+    {ref:'Ephesians 4:26-27', text:'In your anger do not sin: do not let the sun go down while you are still angry, and do not give the devil a foothold.', summary:'Paul doesn\'t say "don\'t be angry." He says don\'t let unresolved anger become a door. What you leave open at night tends to grow by morning.'},
+    {ref:'Proverbs 19:11', text:'A person\'s wisdom yields patience; it is to one\'s glory to overlook an offense.', summary:'Overlooking is not the same as suppressing. The person who can let something go without losing their dignity — that\'s not weakness. The text calls it glory.'},
+    {ref:'Romans 12:19', text:'Do not take revenge, my dear friends, but leave room for God\'s wrath, for it is written: "It is mine to avenge; I will repay," says the Lord.', summary:'Letting God handle what wronged you isn\'t spiritual resignation — it\'s trust that justice isn\'t your job here. You get to put it down.'},
+  ],
+  lost: [
+    {ref:'Proverbs 3:5-6', text:'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.', summary:'The command isn\'t to figure it out — it\'s to trust before you see clearly. Straight paths are a result of submission, not the condition for it.'},
+    {ref:'James 1:5', text:'If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you.', summary:'Without finding fault. That\'s the detail worth sitting with. You don\'t have to arrive at the question with the right posture — just ask. He doesn\'t critique the asking.'},
+    {ref:'Psalm 32:8', text:'I will instruct you and teach you in the way you should go; I will counsel you with my loving eye on you.', summary:'"Loving eye" changes everything about this verse. This isn\'t a commander issuing orders — it\'s a Father watching His child find their footing and guiding with care.'},
+    {ref:'Isaiah 30:21', text:'Whether you turn to the right or to the left, your ears will hear a voice behind you, saying, "This is the way; walk in it."', summary:'The voice comes when you\'re already moving. Direction tends to be revealed in motion, not in waiting rooms.'},
+  ],
+  grateful: [
+    {ref:'1 Thessalonians 5:16-18', text:'Rejoice always, pray continually, give thanks in all circumstances; for this is God\'s will for you in Christ Jesus.', summary:'Three practices, not three feelings. Gratitude is a discipline before it becomes a disposition — and Paul says this is God\'s will, not just a nice suggestion.'},
+    {ref:'Psalm 103:2', text:'Praise the Lord, my soul, and forget not all his benefits.', summary:'The exhortation is to memory — "forget not." Gratitude is partly an act of recollection. What He has done is as real as what you\'re facing.'},
+    {ref:'2 Corinthians 9:15', text:'Thanks be to God for his indescribable gift!', summary:'Paul interrupts his financial counsel to say this. Some gratitude doesn\'t fit neatly in a sentence — it bursts out of one. Let this moment be that.'},
+  ],
+  strong: [
+    {ref:'2 Timothy 2:15', text:'Do your best to present yourself to God as one approved, a worker who does not need to be ashamed and who correctly handles the word of truth.', summary:'Clarity and strength carry responsibility. "Approved" isn\'t applause from others — it\'s alignment with God. Use this season to build something with integrity.'},
+    {ref:'1 Corinthians 15:58', text:'Therefore, my dear brothers and sisters, stand firm. Let nothing move you. Always give yourselves fully to the work of the Lord, because you know that your labor in the Lord is not in vain.', summary:'"Stand firm" is spoken from a position of strength, not fear. When you\'re grounded, this is an invitation — give yourself fully. Nothing done in Him is wasted.'},
+    {ref:'Micah 6:8', text:'He has shown you, O mortal, what is good. And what does the Lord require of you? To act justly and to love mercy and to walk humbly with your God.', summary:'Strength for its own sake eventually turns inward. This verse gives it direction — justice, mercy, humility. When you\'re clear, this is what you do with it.'},
+  ],
+};
+
+// ── MOOD ROUTING FROM "OTHER" ─────────────────────────────────────────
+// Simple keyword map to detect the closest mood from a free-form description
+function detectMoodFromText(text){
+  const t = text.toLowerCase();
+  const signals = {
+    anxious:     ['worried','worry','scared','fear','nervous','stress','panic','overwhelm','what if','dread','uncertain','afraid'],
+    discouraged: ['tired','exhausted','gave up','giving up','hopeless','no point','what\'s the point','empty','beaten','can\'t do','failing','failure','not enough','worthless'],
+    frustrated:  ['angry','mad','unfair','wrong','hurt me','betrayed','disrespected','they didn\'t','he didn\'t','she didn\'t','not fair','upset','annoyed','resentful'],
+    lost:        ['don\'t know','confused','no direction','what to do','where to go','stuck','which way','unclear','lost','can\'t decide','don\'t understand'],
+    grateful:    ['thankful','grateful','blessed','good news','happy','joy','excited','praise','appreciate','gift'],
+    strong:      ['ready','clear','focused','confident','motivated','energized','good place','grounded','strong','purposeful'],
+  };
+  const scores = {};
+  for(const [mood, words] of Object.entries(signals)){
+    scores[mood] = words.filter(w => t.includes(w)).length;
+  }
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1] > 0 ? best[0] : 'discouraged'; // default fallback
+}
+
+// ── ECHO HELPERS — pull something real from what the person wrote ──────
+function echo(text, fallback){
+  // Extract a short meaningful phrase to reflect back
+  const t = text.trim();
+  if(t.length < 6) return fallback;
+  // If short enough, quote it directly
+  if(t.length <= 60) return `"${t}"`;
+  // Otherwise take first sentence or up to ~55 chars at a word boundary
+  const firstSentence = t.split(/[.!?]/)[0].trim();
+  if(firstSentence.length <= 70) return `"${firstSentence}"`;
+  const clipped = t.substring(0, 55).replace(/\s\S*$/, '');
+  return `"${clipped}…"`;
+}
+
+// ── DISCOVERY FLOWS (per mood) ────────────────────────────────────────
+// dig1 and dig2 now receive the user's actual text and echo it back
+const FLOWS = {
+  other: {
+    opening: (name) => `That's okay, ${name} — you don't have to have a name for it yet.\n\nJust describe what's going on. What's happening in your life right now, or what are you feeling? Use your own words.`,
+    // other mood's dig1 handles routing — see processStep for special case
+    dig1: (r) => ``,
+    dig2: (r) => ``,
+    journalPrompt: `Write out what's going on in your own words. Don't edit yourself. Then sit and ask: "Lord, what are you trying to show me in this?"`,
+    closing: `You showed up and put words to something that didn't have a name. That's not small. Bring what came up here to prayer, to your Bible, and to someone you trust. Let God do with it what only He can.`,
+  },
+  anxious: {
+    opening: (name) => `I hear you, ${name}. Anxiety has a way of filling the whole room.\n\nBefore we go anywhere — what's it actually attached to right now? Is there a specific situation, person, or decision that's sitting heavy on you?`,
+    dig1: (r) => {
+      const e = echo(r, 'what you\'re carrying');
+      return `You said ${e} — I don't want to move past that too quickly.\n\nWhen you sit with it — what's the thing you're most afraid of actually happening? Not the surface answer. The real fear underneath it.`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'that');
+      return `${e}. That takes real honesty to name.\n\nOne more thing before I point you somewhere: have you been able to bring any of this to God yet, or has it mostly been a solo weight you've been carrying?`;
+    },
+    journalPrompt: `Write out the real fear — not the polished version. The honest one. Then ask yourself: what does holding this fear say about what I believe about God right now?`,
+    closing: `You named something real today. Bring what you found here into prayer — sit with the scripture, not to solve it, but to let it speak. And if this weight is still heavy after that, it may be time to bring it to a trusted brother or your pastor. You were not meant to carry this alone.`,
+  },
+  discouraged: {
+    opening: (name) => `${name}, discouragement is one of the quietest forms of warfare — because it doesn't feel like a battle, it just feels like the truth.\n\nWhat happened? Or has it been building slowly over time?`,
+    dig1: (r) => {
+      const e = echo(r, 'what you shared');
+      return `${e} — that matters, and I want you to know I heard it.\n\nWhen you're in this place, what does the voice in your head say most? What's the story it keeps telling you about yourself?`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'that');
+      return `${e}. That narrative is worth paying attention to — because that's usually where the real battle is being fought.\n\nHere's what I want to ask you gently: Is any part of you still able to believe that God is at work, even in this? Or has it become hard to see Him moving at all?`;
+    },
+    journalPrompt: `Write down the story discouragement has been telling you. Then write what you know to be true about God — even if it doesn't feel true right now. Let those two things sit on the page together.`,
+    closing: `Discouragement often lies most convincingly right before a shift. What you named here is worth bringing to prayer and to God's word slowly — not to fix the feeling quickly, but to let truth work on it. A pastor or trusted voice can help you hear what you might be too close to hear alone right now.`,
+  },
+  frustrated: {
+    opening: (name) => `${name}, frustration usually means something got violated — an expectation, a boundary, or a sense of what should be right.\n\nWhat happened? Tell me what's going on.`,
+    dig1: (r) => {
+      const e = echo(r, 'what happened');
+      return `${e} — I hear that. That would be hard for anyone.\n\nIf you could name the one thing that feels most wrong about it — not the whole picture, just the part that feels most unjust or disrespectful — what would that be?`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'that');
+      return `${e}. That's important to name clearly.\n\nHere's a harder question, and I ask it with care: Is there anything in how you're responding — or wanting to respond — that you know doesn't line up with who you're trying to be? This isn't about who's right. It's about making sure you don't lose yourself in this.`;
+    },
+    journalPrompt: `Write out what happened — all of it. Then write: "What do I want to do?" And then: "What does integrity ask me to do?" Let those sit next to each other.`,
+    closing: `Your frustration is valid. But how you carry it forward is yours to choose. Bring this to prayer — not just to feel better, but to ask for wisdom about what's yours to address and what's His to handle. If it involves someone specific, a conversation with a trusted voice before you respond is worth the time.`,
+  },
+  lost: {
+    opening: (name) => `${name}, being lost is uncomfortable — but it usually means something in your old understanding has run out, and something new hasn't arrived yet.\n\nWhat are you trying to figure out? What's the thing that feels unclear?`,
+    dig1: (r) => {
+      const e = echo(r, 'what you described');
+      return `${e} — that's not a small thing to be sitting with.\n\nWhen you try to pray about it or get quiet with it — does it feel like silence from God, or more like the noise around you is too loud to hear clearly?`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'what you said');
+      return `${e}. That's honest, and it matters.\n\nOne last question: Is there anything you already sense deep down — a nudge, a discomfort, a direction you keep coming back to — that you might be dismissing because it doesn't fully make sense yet?`;
+    },
+    journalPrompt: `Write down everything you know for certain — even if it's small. Then write what you're unsure of. Then finish this sentence: "The last clear thing God said to me was…" — and start from there.`,
+    closing: `Clarity almost always comes in motion, not in waiting. Take the piece you do know and act from that. What you found in scripture today is worth sitting with slowly — read it more than once. And if the direction still won't come, bring it before God with someone who has walked with Him longer than you have.`,
+  },
+  grateful: {
+    opening: (name) => `${name}, gratitude is worth pausing for — it's easy to rush past.\n\nWhat's the thing you're grateful for right now? Take a second before you type it.`,
+    dig1: (r) => {
+      const e = echo(r, 'that');
+      return `${e} — that's something worth marking.\n\nGratitude has a way of pointing to something deeper. What does this moment make you see about how God has been moving — even in the harder parts of getting here?`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'what you shared');
+      return `${e}. That's worth holding onto carefully.\n\nIs there someone in your life who needs to hear what you just put into words? And is there anything this moment is asking you to do or be differently going forward?`;
+    },
+    journalPrompt: `Write this moment down in detail — what happened, what you feel, what you see God doing. Then write a prayer of thanksgiving. Let it be as specific as the moment deserves.`,
+    closing: `Gratitude recorded becomes a stone of remembrance — something to return to when the next difficult season comes. Bring this to God in prayer. And if there's someone who was part of what you're grateful for, tell them. Gratitude shared multiplies.`,
+  },
+  strong: {
+    opening: (name) => `${name}, clarity and strength are gifts — and they carry responsibility.\n\nWhat's making you feel grounded right now? What happened, or what have you stepped into?`,
+    dig1: (r) => {
+      const e = echo(r, 'what you described');
+      return `${e} — that's good to hear. And I mean that.\n\nWhen you're operating from this place, what is it that God seems to be calling you toward? What's the work, the person, or the commitment this strength is meant to be poured into?`;
+    },
+    dig2: (r) => {
+      const e = echo(r, 'that');
+      return `${e}. That's worth being deliberate about.\n\nOne question: Is there anything you've been putting off — a hard conversation, a decision, an act of service — that you've been waiting to feel ready for? You might be ready right now.`;
+    },
+    journalPrompt: `Write down what you feel called to do from this place of strength. Be specific. Then write what it will cost you — and whether you're willing to pay it.`,
+    closing: `Seasons of clarity are meant to be acted on. Bring this to prayer — not to ask for permission, but to align what you're hearing with what God has already been saying. Strength without accountability tends to drift. Keep someone close who can speak truth to you in this season.`,
+  },
+};
+
+// ── UI HELPERS ────────────────────────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function autoResize(ta){
+  ta.style.height='auto';
+  ta.style.height = Math.min(ta.scrollHeight, 140)+'px';
+}
+
+function scrollBottom(){
+  const feed = document.getElementById('convoFeed');
+  setTimeout(()=>{ feed.scrollTop = feed.scrollHeight; }, 50);
+}
+
+function handleKey(e){
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendUserMessage(); }
+}
+
+// ── WELCOME ───────────────────────────────────────────────────────────
+function beginSession(){
+  const input = document.getElementById('companionNameInput').value.trim();
+  companionName = input || 'Anchor';
+  data.companionName = companionName;
+  saveData(data);
+  document.getElementById('moodHeaderName').textContent = companionName;
+  document.getElementById('convoName').textContent = companionName;
+  showScreen('screen-mood');
+}
+
+// ── MOOD ──────────────────────────────────────────────────────────────
+function showMood(){
+  showScreen('screen-mood');
+  convoStep = 0;
+  userResponses = [];
+  document.getElementById('convoFeed').innerHTML = '';
+}
+
+function selectMood(mood){
+  currentMood = mood;
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+  setTimeout(()=>{
+    showScreen('screen-convo');
+    startConversation();
+  }, 220);
+}
+
+// ── CONVERSATION ENGINE ───────────────────────────────────────────────
+function startConversation(){
+  const feed = document.getElementById('convoFeed');
+  feed.innerHTML = '';
+  convoStep = 0;
+  userResponses = [];
+  setInputHint('Take your time. Write as much or as little as you need.');
+  setQuickChips([]);
+  const flow = FLOWS[currentMood];
+  if(!flow) return;
+  typeCompanionMessage(flow.opening(companionName), ()=>{
+    convoStep = 1;
+    enableInput();
+  });
+}
+
+function typeCompanionMessage(text, onDone){
+  const feed = document.getElementById('convoFeed');
+  disableInput();
+
+  // typing indicator
+  const typer = document.createElement('div');
+  typer.className = 'typing-indicator';
+  typer.innerHTML = `<div class="msg-dot" style="margin-top:0"></div><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  feed.appendChild(typer);
+  scrollBottom();
+
+  const delay = Math.min(Math.max(text.length * 18, 1000), 2800);
+  setTimeout(()=>{
+    feed.removeChild(typer);
+    const wrap = document.createElement('div');
+    wrap.className = 'msg-companion';
+    wrap.innerHTML = `<div class="msg-dot"></div><div class="msg-companion-bubble">${text.replace(/\n/g,'<br/>')}</div>`;
+    feed.appendChild(wrap);
+    scrollBottom();
+    if(onDone) onDone();
+  }, delay);
+}
+
+function addScriptureCard(scripture){
+  const feed = document.getElementById('convoFeed');
+  const el = document.createElement('div');
+  el.className = 'scripture-card';
+  el.innerHTML = `
+    <div class="scripture-card-label">Scripture for this moment</div>
+    <div class="scripture-card-ref">${scripture.ref}</div>
+    <div class="scripture-card-text">${scripture.text}</div>
+    <div class="scripture-card-summary">${scripture.summary}</div>`;
+  feed.appendChild(el);
+  scrollBottom();
+}
+
+function addUserBubble(text){
+  const feed = document.getElementById('convoFeed');
+  const el = document.createElement('div');
+  el.className = 'msg-user';
+  el.textContent = text;
+  feed.appendChild(el);
+  scrollBottom();
+}
+
+function addClosingCard(text){
+  const feed = document.getElementById('convoFeed');
+  const el = document.createElement('div');
+  el.className = 'closing-card';
+  el.innerHTML = `<div class="closing-card-title">A word before you go</div><div class="closing-card-text">${text.replace(/\n/g,'<br/>')}</div>`;
+  feed.appendChild(el);
+  scrollBottom();
+}
+
+function disableInput(){
+  const btn = document.getElementById('sendBtn');
+  const ta = document.getElementById('convoInput');
+  if(btn) btn.disabled = true;
+  isTyping = true;
+}
+
+function enableInput(){
+  const btn = document.getElementById('sendBtn');
+  const ta = document.getElementById('convoInput');
+  if(btn) btn.disabled = false;
+  if(ta) ta.focus();
+  isTyping = false;
+}
+
+function setInputHint(text){
+  const el = document.getElementById('inputHint');
+  if(el) el.textContent = text;
+}
+
+function setQuickChips(chips){
+  const el = document.getElementById('quickChips');
+  if(!el) return;
+  el.innerHTML = chips.map(c=>`<button class="quick-chip" onclick="useChip('${c.replace(/'/g,"\\'")}')">  ${c}</button>`).join('');
+}
+
+function useChip(text){
+  const ta = document.getElementById('convoInput');
+  ta.value = text;
+  autoResize(ta);
+  sendUserMessage();
+}
+
+// ── SEND USER MESSAGE ─────────────────────────────────────────────────
+function sendUserMessage(){
+  const ta = document.getElementById('convoInput');
+  const text = ta.value.trim();
+  if(!text || isTyping) return;
+  ta.value = '';
+  ta.style.height = 'auto';
+  addUserBubble(text);
+  userResponses.push(text);
+  setQuickChips([]);
+  processStep(text);
+}
+
+function pickScripture(){
+  const pool = SCRIPTURES[currentMood] || SCRIPTURES['anxious'];
+  // pick based on response content if possible
+  const combined = userResponses.join(' ').toLowerCase();
+  // simple keyword weighting — can always be expanded
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function processStep(userText){
+  const flow = FLOWS[currentMood];
+  if(!flow) return;
+
+  if(convoStep === 1){
+    // Special case: "other" mood — detect the real feeling and silently re-route
+    if(currentMood === 'other'){
+      const detected = detectMoodFromText(userText);
+      currentMood = detected;
+      const detectedFlow = FLOWS[detected];
+      // Acknowledge naturally and transition into dig1 of detected flow
+      typeCompanionMessage(detectedFlow.dig1(userText), ()=>{
+        convoStep = 2;
+        enableInput();
+        setInputHint('No wrong answers here.');
+      });
+      return;
+    }
+    // After opening reply: ask dig1
+    typeCompanionMessage(flow.dig1(userText), ()=>{
+      convoStep = 2;
+      enableInput();
+      setInputHint('No wrong answers here.');
+    });
+  } else if(convoStep === 2){
+    // After dig1: ask dig2
+    typeCompanionMessage(flow.dig2(userText), ()=>{
+      convoStep = 3;
+      enableInput();
+      setInputHint('Take as long as you need.');
+    });
+  } else if(convoStep === 3){
+    // After dig2: show scripture + reflection, then journal prompt
+    const scripture = pickScripture();
+    typeCompanionMessage(`Thank you for going there. Here's a scripture I want to put in front of you — not as an answer, but as a place to start.`, ()=>{
+      addScriptureCard(scripture);
+      setTimeout(()=>{
+        typeCompanionMessage(`Sit with that for a moment.\n\n${flow.journalPrompt}\n\nWrite what comes up — this is between you and God.`, ()=>{
+          convoStep = 4;
+          enableInput();
+          setInputHint('Write as much as you need — then send when ready.');
+          setQuickChips(['I need more time with this', 'I\'m ready to close']);
+        });
+      }, 600);
+    });
+  } else if(convoStep === 4){
+    // After journal: save and close
+    journalText = userText;
+    saveSession(scripture_ref_from_last_card());
+    typeCompanionMessage(`I hear you.`, ()=>{
+      setTimeout(()=>{
+        addClosingCard(flow.closing);
+        convoStep = 5;
+        swapToNewSessionUI();
+      }, 400);
+    });
+  } else if(convoStep === 5){
+    // allow continued reflection
+    typeCompanionMessage(`You\'ve done the work for this moment. Carry what you found into prayer. If more comes up later, I\'ll be here.`, ()=>{
+      enableInput();
+    });
+  }
+}
+
+function scripture_ref_from_last_card(){
+  const cards = document.querySelectorAll('.scripture-card-ref');
+  if(cards.length) return cards[cards.length-1].textContent;
+  return '';
+}
+
+function saveSession(scriptureRef){
+  const entry = {
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),
+    mood: currentMood,
+    scripture: scriptureRef,
+    journal: journalText,
+    exchange: userResponses.slice(),
+  };
+  sessionHistory.unshift(entry);
+  data.sessions = sessionHistory.slice(0, 50); // keep last 50
+  saveData(data);
+}
+
+function swapToNewSessionUI(){
+  const area = document.getElementById('convoInputArea');
+  area.innerHTML = `<button class="new-session-btn" onclick="restartFlow()">Begin a new check-in ↺</button>`;
+}
+
+function restartFlow(){
+  showScreen('screen-mood');
+  convoStep = 0;
+  userResponses = [];
+  document.getElementById('convoFeed').innerHTML = '';
+  // restore input area
+  document.getElementById('convoInputArea').innerHTML = `
+    <div class="quick-chips" id="quickChips"></div>
+    <textarea id="convoInput" placeholder="Write freely…" rows="2"
+      oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+    <div class="input-action-row">
+      <span class="input-hint" id="inputHint">Take your time.</span>
+      <button class="send-btn" id="sendBtn" onclick="sendUserMessage()">Send</button>
+    </div>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+(function init(){
+  // restore companion name if returning user
+  if(data.companionName){
+    companionName = data.companionName;
+    document.getElementById('companionNameInput').value = companionName === 'Anchor' ? '' : companionName;
+    document.getElementById('moodHeaderName').textContent = companionName;
+    document.getElementById('convoName').textContent = companionName;
+  }
+})();
+</script>
+</body>
+</html>
